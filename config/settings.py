@@ -43,11 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
 
+    # models
+    'applications.account',
+
     # lib
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
     'django_filters',
+    'phone_field',
 ]
 
 MIDDLEWARE = [
@@ -170,3 +174,8 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+AUTH_USER_MODEL = 'account.CustomUser'
+
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+BROKER_TRANSPORT = 'redis'
