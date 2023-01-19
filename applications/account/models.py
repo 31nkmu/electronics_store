@@ -42,6 +42,7 @@ class CustomUser(AbstractUser):
     is_subscribed = models.BooleanField(default=True)
     codeword = models.CharField(max_length=50)
     phone_number = models.CharField(blank=True, null=True, max_length=50)
+    is_seller = models.BooleanField(default=False)
 
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'
@@ -54,4 +55,12 @@ class CustomUser(AbstractUser):
     def create_activation_code(self):
         import uuid
         code = str(uuid.uuid4())
+        self.activation_code = code
+
+    def create_code_confirm(self):
+        import random
+        chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+        code = ''
+        for i in range(4):
+            code += random.choice(chars)
         self.activation_code = code
