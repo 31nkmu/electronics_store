@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from feedback import services
-from feedback.services import get_reviewers
+from applications.feedback import services
+from applications.feedback.services import get_reviewers
 
 
 class FavoriteMixin:

@@ -4,15 +4,13 @@ from rest_framework import status
 from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
-from applications.comments.mixins import CommentMixin
 from applications.electronics.models import Electronic
 from applications.electronics.serializers import ElectronicSerializer
-from applications.favorites.mixins import FavoriteMixin
-from applications.likes.mixins import LikeMixin
-from applications.ratings.mixins import RatingMixin
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+
+from applications.feedback.mixins import FavoriteMixin, CommentMixin, RatingMixin, LikeMixin
 
 
 class LargeResultsSetPagination(PageNumberPagination):
