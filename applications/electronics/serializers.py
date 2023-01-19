@@ -1,14 +1,10 @@
 from django.db.models import Avg
 from rest_framework import serializers
-from applications.comments.models import Comment
-from applications.comments.serializers import CommentSerializer
-from applications.comments.services import is_commented
-from applications.electronics.models import Electronic, Image
-from applications.favorites.services import is_favorite
-from applications.likes.models import Like
-from applications.likes.services import is_fan
-from applications.ratings.models import Rating
-from applications.ratings.services import is_reviewer
+
+from applications.electronics.models import Image, Electronic
+from applications.feedback.models import Comment, Rating, Like
+from applications.feedback.serializers import CommentSerializer
+from applications.feedback.services import is_fan, is_reviewer, is_commented, is_favorite
 
 
 class ImageSerializer(serializers.ModelSerializer):

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from feedback.models import Rating, Like, Comment, Favorite
-from feedback.serializers import ReviewerSerializer, FanSerializer, CommentSerializer, FavoriteSerializer
+from applications.feedback.models import Rating, Like, Comment, Favorite
+from applications.feedback.serializers import ReviewerSerializer, FanSerializer, CommentSerializer, FavoriteSerializer
 
 
 # COMMENT ##############################################################################################################
