@@ -1,11 +1,13 @@
-from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
-from applications.electronics.models import Electronic
-from applications.electronics.serializers import ElectronicSerializer
+
+from applications.electronics.mixins import CharAmountMixin
+from applications.electronics.models import Electronic, Characteristic
+from applications.electronics.serializers import ElectronicSerializer, CharacteristicSerializer
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -19,7 +21,7 @@ class LargeResultsSetPagination(PageNumberPagination):
     max_page_size = 10000
 
 
-class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, ModelViewSet):
+class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, CharAmountMixin, ModelViewSet):
     queryset = Electronic.objects.all()
     serializer_class = ElectronicSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -30,14 +32,3 @@ class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, Mod
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-
-class AddElectronicCountAPIView(UpdateAPIView):
-    def post(self, request, pk=None):
-        electronic = self.get_object()
-        amount_to_add = request.data['amount']
-        electronic.amount += amount_to_add
-        electronic.save()
-        return Response({'msg': 'успешно добавлено количество товаров'}, status=status.HTTP_201_CREATED)
-
-

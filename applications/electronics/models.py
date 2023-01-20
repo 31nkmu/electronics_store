@@ -14,9 +14,8 @@ class Electronic(models.Model):
         ('out_of_stock', 'out of stock')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='electronics')
-    category = models.ManyToManyField(Category, related_name='electronics')
-    title = models.CharField(max_length=88,)
-    description = models.TextField()
+    category = models.ForeignKey(Category, related_name='electronics', on_delete=models.CASCADE)
+    title = models.CharField(max_length=88)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     amount = models.PositiveIntegerField(default=10)
     status = models.CharField(max_length=50, choices=STATUS, default='on_sale')
@@ -29,3 +28,14 @@ class Electronic(models.Model):
 class Image(models.Model):
     electronic = models.ForeignKey(Electronic, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='images/')
+
+
+class Characteristic(models.Model):
+    electronic = models.OneToOneField(Electronic, on_delete=models.CASCADE, related_name='electronics')
+    thickness = models.CharField(max_length=128, null=True, blank=True)
+    display = models.CharField(max_length=128, null=True, blank=True)
+    processor = models.CharField(max_length=128, null=True, blank=True)
+    video = models.CharField(max_length=10, null=True, blank=True)
+    memory = models.CharField(max_length=120, null=True, blank=True)
+    size = models.CharField(max_length=128, null=True, blank=True)
+    weight = models.CharField(max_length=128, null=True, blank=True)

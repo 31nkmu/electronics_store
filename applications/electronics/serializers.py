@@ -1,6 +1,6 @@
 from django.db.models import Avg
 from rest_framework import serializers
-from applications.electronics.models import Electronic, Image
+from applications.electronics.models import Electronic, Image, Characteristic
 from applications.feedback.models import Like, Rating, Comment
 from applications.feedback.serializers import CommentSerializer
 from applications.feedback.services import is_fan, is_reviewer, is_commented, is_favorite
@@ -9,6 +9,12 @@ from applications.feedback.services import is_fan, is_reviewer, is_commented, is
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
+        fields = '__all__'
+
+
+class CharacteristicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Characteristic
         fields = '__all__'
 
 
@@ -22,9 +28,7 @@ class ElectronicSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get('request')
-        category = validated_data.pop('category')
         electronic = Electronic.objects.create(**validated_data)
-        electronic.category.set(category)
         files = request.FILES
         for image in files.getlist('images'):
             Image.objects.create(electronic=electronic, image=image)
@@ -51,4 +55,10 @@ class ElectronicSerializer(serializers.ModelSerializer):
         rep['is_reviewer'] = is_reviewer(user=user, obj=instance)
         rep['is_commented'] = is_commented(user=user, obj=instance)
         rep['is_favorite'] = is_favorite(user=user, obj=instance)
+        try:
+            characteristic = Characteristic.objects.get(electronic=instance)
+            serializer = CharacteristicSerializer(characteristic, many=False)
+            rep['characteristic'] = serializer.data
+        except Characteristic.DoesNotExist:
+            pass
         return rep
