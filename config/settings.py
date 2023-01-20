@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
     # models
     'applications.account',
+    'applications.electronics',
+    'applications.feedback',
 
     # lib
     'rest_framework',
