@@ -7,6 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from applications.electronics.mixins import CharAmountMixin
 from applications.electronics.models import Electronic, Characteristic
+from applications.electronics.permissions import IsSellerOrReadOnly
 from applications.electronics.serializers import ElectronicSerializer, CharacteristicSerializer
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import PageNumberPagination
@@ -24,7 +25,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, CharAmountMixin, ModelViewSet):
     queryset = Electronic.objects.all()
     serializer_class = ElectronicSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsSellerOrReadOnly]
     filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     filterset_fields = ['category']
     search_fields = ['title']
