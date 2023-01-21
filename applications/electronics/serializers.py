@@ -1,6 +1,6 @@
 from django.db.models import Avg
 from rest_framework import serializers
-from applications.electronics.models import Electronic, Image, Characteristic
+from applications.electronics.models import Electronic, Image, Characteristic, ParsedElectronic
 from applications.feedback.models import Like, Rating, Comment
 from applications.feedback.serializers import CommentSerializer
 from applications.feedback.services import is_fan, is_reviewer, is_commented, is_favorite
@@ -61,4 +61,19 @@ class ElectronicSerializer(serializers.ModelSerializer):
             rep['characteristic'] = serializer.data
         except Characteristic.DoesNotExist:
             pass
+        return rep
+
+
+class ParsedElectronicSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = ParsedElectronic
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        images = []
+        for img in instance.images.all():
+            img = img
+            images.append(img.image)
+        rep['images'] = images
         return rep

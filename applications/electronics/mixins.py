@@ -8,6 +8,11 @@ from applications.electronics.models import Characteristic
 class CharAmountMixin:
     @action(methods=['POST'], detail=True)
     def characteristic(self, request, pk):
+        """
+        позволяет добавить характеристику продукта
+        :param request: запрос
+        :param pk: id продукта, которому нужно добавить характеристику
+        """
         electronic = self.get_object()
         characteristic_obj, is_created = Characteristic.objects.get_or_create(electronic=electronic)
         data = dict(request.data)
@@ -22,6 +27,11 @@ class CharAmountMixin:
 
     @action(methods=['POST'], detail=True)
     def amount(self, request, pk=None):
+        """
+        позволяет увеличить количество продукта
+        :param request: запрос
+        :param pk: id продукта который нужно увеличить
+        """
         try:
             electronic = self.get_object()
             amount = request.data['amount']
