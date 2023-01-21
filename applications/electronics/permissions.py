@@ -5,12 +5,18 @@ from rest_framework.permissions import SAFE_METHODS
 class IsSellerOrReadOnly(permissions.BasePermission):
     # CREATE, LIST
     def has_permission(self, request, view):
+        """
+        Только авторизованный продавец может добавлять продукты
+        """
         if request.method == 'GET':
             return True
         return request.user.is_seller and request.user.is_authenticated
 
     # RETRIEVE, UPDATE, DELETE
     def has_object_permission(self, request, view, obj):
+        """
+        Только авторизованный продавец и владелец товара может его изменять или удалять
+        """
         if request.method in SAFE_METHODS:
             return True
         return request.user.is_authenticated and (
