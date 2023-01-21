@@ -22,6 +22,11 @@ class FavoriteMixin:
             status=status.HTTP_200_OK
         )
 
+    @action(detail=False, methods=['GET'])
+    def get_favorites(self, request):
+        product_data = services.get_favorites(user=request.user)
+        return Response(product_data, status=status.HTTP_200_OK)
+
 
 class CommentMixin:
     @action(methods=['POST'], detail=True)
