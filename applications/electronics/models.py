@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+
 User = get_user_model()
 
 
@@ -39,3 +40,13 @@ class Characteristic(models.Model):
     memory = models.CharField(max_length=120, null=True, blank=True)
     size = models.CharField(max_length=128, null=True, blank=True)
     weight = models.CharField(max_length=128, null=True, blank=True)
+
+
+class ParsedElectronic(models.Model):
+    title = models.TextField()
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+
+
+class RecommendImages(models.Model):
+    electronic_recommend = models.ForeignKey(ParsedElectronic, related_name='images', on_delete=models.CASCADE)
+    image = models.TextField()

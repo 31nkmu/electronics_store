@@ -11,3 +11,9 @@ celery[redis]
 django-filter
 django-cors-headers
 pyngrok==5.0.5
+bs4
+requests
+lxml
+selenium
+webdriver_manager
+fake-useragent
