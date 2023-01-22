@@ -17,3 +17,4 @@ lxml
 selenium
 webdriver_manager
 fake-useragent
+python-json-logger

@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView
@@ -6,9 +8,11 @@ from rest_framework.permissions import IsAuthenticated
 from applications.account import serializers
 
 User = get_user_model()
+logger = logging.getLogger('django_logger')
 
 
 class RegisterApiView(CreateAPIView):
+    logger.warning('register')
     queryset = User.objects.all()
     serializer_class = serializers.RegisterSerializer
 
@@ -26,21 +30,25 @@ class ActivationApiView(ListAPIView):
 
 
 class ChangePasswordApiView(CreateAPIView):
+    logger.warning('change password')
     queryset = User.objects.all()
     serializer_class = serializers.ChangePasswordSerializer
     permission_classes = [IsAuthenticated]
 
 
 class ForgotPasswordApiView(CreateAPIView):
+    logger.warning('forgot password')
     queryset = User.objects.all()
     serializer_class = serializers.ForgotPasswordSerializer
 
 
 class ForgotPasswordConfirmApiView(CreateAPIView):
+    logger.warning('forgot password confirm')
     queryset = User.objects.all()
     serializer_class = serializers.ForgotPasswordConfirmSerializer
 
 
 class ForgotPasswordCodewordApiView(CreateAPIView):
+    logger.warning('forgot password codeword')
     queryset = User.objects.all()
     serializer_class = serializers.ForgotPasswordCodewordSerializer
