@@ -29,7 +29,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         return phone_number
 
     def create(self, validated_data):
-        print(validated_data)
         user = User.objects.create_user(
             password=validated_data['password'],
             email=validated_data['email'],
