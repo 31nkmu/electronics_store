@@ -22,6 +22,11 @@ class FavoriteMixin:
             status=status.HTTP_200_OK
         )
 
+    @action(detail=False, methods=['GET'])
+    def get_favorites(self, request):
+        product_data = services.get_favorites(user=request.user)
+        return Response(product_data, status=status.HTTP_200_OK)
+
 
 class CommentMixin:
     @action(methods=['POST'], detail=True)
@@ -40,6 +45,8 @@ class CommentMixin:
             )
         except MultiValueDictKeyError:
             return Response('поле comment обьязательно')
+        except KeyError:
+            return Response('поле comment обьязательно')
 
     @action(methods=['POST'], detail=True)
     def del_comment(self, request, pk=None):
@@ -54,7 +61,10 @@ class CommentMixin:
 
     @action(methods=['GET'], detail=False)
     def comments(self, request):
-        return Response(services.get_comments(user=request.user), status=status.HTTP_200_OK)
+        try:
+            return Response(services.get_comments(user=request.user), status=status.HTTP_200_OK)
+        except TypeError:
+            return Response({'msg': 'вы не авторизованы'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LikeMixin:
