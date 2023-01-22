@@ -1,8 +1,7 @@
-from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
-from rest_framework.generics import UpdateAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 from applications.electronics.models import Electronic
 from applications.electronics.serializers import ElectronicSerializer
@@ -31,13 +30,12 @@ class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, Mod
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-
-class AddElectronicCountAPIView(UpdateAPIView):
-    def post(self, request, pk=None):
+    @action(methods=['POST'], detail=True, permission_classes=[IsAdminUser])
+    def add_count_electronic(self, request, pk=None):
         electronic = self.get_object()
         amount_to_add = request.data['amount']
-        electronic.amount += amount_to_add
+        electronic.amount += int(amount_to_add)
         electronic.save()
-        return Response({'msg': 'успешно добавлено количество товаров'}, status=status.HTTP_201_CREATED)
+        return Response({'msg': f'успешно добавлено {amount_to_add} количество товаров'}, status=status.HTTP_200_OK)
 
 
