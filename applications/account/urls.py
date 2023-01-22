@@ -12,4 +12,5 @@ urlpatterns = [
     path('forgot_password/', views.ForgotPasswordApiView.as_view()),
     path('forgot_password_confirm/', views.ForgotPasswordConfirmApiView.as_view()),
     path('forgot_password_codeword/', views.ForgotPasswordCodewordApiView.as_view()),
+    path('forgot_password_phone/', views.ForgotPasswordPhoneApiView.as_view())
 ]
