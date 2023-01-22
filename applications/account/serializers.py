@@ -26,6 +26,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Ваш номер должен начинаться на +996')
         if len(phone_number) != 13:
             raise serializers.ValidationError('Некоректный номер телефона')
+        if not phone_number[1:].isdigit():
+            raise serializers.ValidationError('Некоректный номер телефона')
         return phone_number
 
     def create(self, validated_data):
@@ -146,3 +148,28 @@ class ForgotPasswordCodewordSerializer(serializers.Serializer):
         user.set_password(validated_data['new_password'])
         user.save(update_fields=['password'])
         return user
+
+
+class ForgotPasswordPhoneSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(required=True)
+
+    @staticmethod
+    def validate_phone_number(phone_number):
+        if not phone_number.startswith('+996'):
+            raise serializers.ValidationError('Ваш номер должен начинаться на +996')
+        if len(phone_number) != 13:
+            raise serializers.ValidationError('Некоректный номер телефона')
+        if not phone_number[1:].isdigit():
+            raise serializers.ValidationError('Некоректный номер телефона')
+        if not User.objects.filter(phone_number=phone_number).exists():
+            raise serializers.ValidationError('Юзера с данным номером не существует')
+        return phone_number
+
+    def create(self, validated_data):
+        user = User.objects.get(phone_number=validated_data['phone_number'])
+        user.create_code_confirm()
+        user.save(update_fields=['activation_code'])
+        tasks.send_code_to_phone.delay(code=user.activation_code, receiver=user.phone_number)
+        return user
+
+

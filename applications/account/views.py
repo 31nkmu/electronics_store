@@ -52,3 +52,12 @@ class ForgotPasswordCodewordApiView(CreateAPIView):
     logger.warning('forgot password codeword')
     queryset = User.objects.all()
     serializer_class = serializers.ForgotPasswordCodewordSerializer
+
+
+class ForgotPasswordPhoneApiView(CreateAPIView):
+    logger.warning('forgot password phone')
+    queryset = User.objects.all()
+    serializer_class = serializers.ForgotPasswordPhoneSerializer
+
+
+
