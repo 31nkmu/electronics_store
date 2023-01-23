@@ -15,6 +15,8 @@ from pathlib import Path
 import dj_database_url
 from decouple import config
 
+from config.logging_formatters import CustomJsonFormatter
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -180,3 +182,46 @@ AUTH_USER_MODEL = 'account.CustomUser'
 
 BROKER_URL = 'redis://127.0.0.1:6379/0'
 BROKER_TRANSPORT = 'redis'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / 'cache/',
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'main': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'json_formatter': {
+            '()': CustomJsonFormatter,
+        }
+    },
+
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'main'
+        },
+        'django_file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'json_formatter',
+            'filename': 'django_info.log',
+        },
+    },
+
+    'loggers': {
+        'django_logger': {
+            'handlers': ['django_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

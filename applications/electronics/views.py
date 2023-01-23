@@ -1,3 +1,5 @@
+import logging
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import action
@@ -14,6 +16,8 @@ from rest_framework.response import Response
 
 from applications.feedback.mixins import FavoriteMixin, CommentMixin, RatingMixin, LikeMixin
 
+loger = logging.getLogger('django_logger')
+
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 8
@@ -22,6 +26,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 
 
 class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, CharAmountMixin, ModelViewSet):
+    loger.warning('electronic CRUD')
     queryset = Electronic.objects.all()
     serializer_class = ElectronicSerializer
     permission_classes = [IsSellerOrReadOnly]
@@ -47,6 +52,8 @@ class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, Cha
 
 
 class ElectronicRecommendApiView(APIView):
+    loger.warning('electronic recommend')
+
     def get(self, request):
         """
         для продавцов выводит товары, спаршенные из других сайтов, а для остальных - лучшие товары нашего сайта
