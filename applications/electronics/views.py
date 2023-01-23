@@ -1,4 +1,4 @@
-import logging
+# import logging
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
@@ -16,7 +16,7 @@ from rest_framework.response import Response
 
 from applications.feedback.mixins import FavoriteMixin, CommentMixin, RatingMixin, LikeMixin
 
-loger = logging.getLogger('django_logger')
+# loger = logging.getLogger('django_logger')
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -26,7 +26,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 
 
 class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, CharAmountMixin, ModelViewSet):
-    loger.warning('electronic CRUD')
+    # loger.warning('electronic CRUD')
     queryset = Electronic.objects.all()
     serializer_class = ElectronicSerializer
     permission_classes = [IsSellerOrReadOnly]
@@ -52,7 +52,7 @@ class ElectronicViewSet(FavoriteMixin, CommentMixin, RatingMixin, LikeMixin, Cha
 
 
 class ElectronicRecommendApiView(APIView):
-    loger.warning('electronic recommend')
+    # loger.warning('electronic recommend')
 
     def get(self, request):
         """
