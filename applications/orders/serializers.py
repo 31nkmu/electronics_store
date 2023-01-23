@@ -29,7 +29,6 @@ class OrderSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         electronic = attrs['electronic']
         count = attrs['count']
-
         if electronic.amount < count:
             raise serializers.ValidationError(f'вы не можете заказать такое количество, осталось {electronic.amount}')
         return attrs
