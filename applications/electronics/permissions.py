@@ -10,7 +10,10 @@ class IsSellerOrReadOnly(permissions.BasePermission):
         """
         if request.method == 'GET':
             return True
-        return request.user.is_seller and request.user.is_authenticated
+        try:
+            return request.user.is_seller and request.user.is_authenticated
+        except AttributeError:
+            return False
 
     # RETRIEVE, UPDATE, DELETE
     def has_object_permission(self, request, view, obj):
@@ -19,5 +22,8 @@ class IsSellerOrReadOnly(permissions.BasePermission):
         """
         if request.method in SAFE_METHODS:
             return True
-        return request.user.is_authenticated and (
-                (request.user == obj.user and request.user.is_seller) or request.user.is_staff)
+        try:
+            return request.user.is_authenticated and (
+                    (request.user == obj.user and request.user.is_seller) or request.user.is_staff)
+        except AttributeError:
+            return False
