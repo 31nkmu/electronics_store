@@ -16,7 +16,8 @@ class AccountTests(APITestCase):
 
     @staticmethod
     def setup_user():
-        user = User.objects.create_user(email='test@gmail.com', codeword='test', is_active=True, password='1234567')
+        user = User.objects.create_user(email='test@gmail.com', codeword='test', is_active=True,
+                                        password='1234567', phone_number='+996551106750')
         return user
 
     def test_post_register(self):
@@ -96,6 +97,14 @@ class AccountTests(APITestCase):
                 'new_password': '123456', 'new_password_repeat': '123456'}
         request = self.factory.post('api/v1/account/forgot_password_codeword/', data)
         view = views.ForgotPasswordCodewordApiView.as_view()
+        response = view(request)
+
+        assert response.status_code == 201
+
+    def test_forgot_password_phone(self):
+        data = {'phone_number': self.user.phone_number}
+        request = self.factory.post('api/v1/account/forgot_password_phone/', data)
+        view = views.ForgotPasswordPhoneApiView.as_view()
         response = view(request)
 
         assert response.status_code == 201
