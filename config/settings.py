@@ -190,38 +190,38 @@ CACHES = {
         'LOCATION': BASE_DIR / 'cache/',
     }
 }
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-
-    'formatters': {
-        'main': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-        'json_formatter': {
-            '()': CustomJsonFormatter,
-        }
-    },
-
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'main'
-        },
-        'django_file': {
-            'class': 'logging.FileHandler',
-            'formatter': 'json_formatter',
-            'filename': 'django_info.log',
-        },
-    },
-
-    'loggers': {
-        'django_logger': {
-            'handlers': ['django_file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+#
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#
+#     'formatters': {
+#         'main': {
+#             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+#             'style': '{',
+#         },
+#         'json_formatter': {
+#             '()': CustomJsonFormatter,
+#         }
+#     },
+#
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'main'
+#         },
+#         'django_file': {
+#             'class': 'logging.FileHandler',
+#             'formatter': 'json_formatter',
+#             'filename': 'django_info.log',
+#         },
+#     },
+#
+#     'loggers': {
+#         'django_logger': {
+#             'handlers': ['django_file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
