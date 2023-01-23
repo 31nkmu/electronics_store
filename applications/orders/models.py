@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
-from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
+from creditcards.models import CardNumberField, SecurityCodeField
 
 from applications.electronics.models import Electronic
 from applications.orders.forms import PaymentForm
@@ -16,7 +16,6 @@ class Order(models.Model):
     order_confirm = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     cc_number = CardNumberField(_('card number'))
-    # cc_expiry = CardExpiryField(_('expiration date'))
     cc_expiry = PaymentForm()
     cc_code = SecurityCodeField(_('security code'))
     address = models.CharField(max_length=130)
