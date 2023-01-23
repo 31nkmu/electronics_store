@@ -4,7 +4,7 @@ from django.db import models
 from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
 
 from applications.electronics.models import Electronic
-from applications.orders.forms import PaymentForm
+
 
 User = get_user_model()
 
@@ -16,8 +16,7 @@ class Order(models.Model):
     order_confirm = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     cc_number = CardNumberField(_('card number'))
-    # cc_expiry = CardExpiryField(_('expiration date'))
-    cc_expiry = PaymentForm()
+    cc_expiry = models.CharField(max_length=4)
     cc_code = SecurityCodeField(_('security code'))
     address = models.CharField(max_length=130)
 
