@@ -36,7 +36,7 @@ class CharAmountMixin:
             electronic = self.get_object()
             amount = request.data['amount']
             electronic.amount += int(amount)
-            electronic.save()
+            electronic.save(update_fields=['amount'])
             return Response({'msg': 'Продкуты добавлены'}, status=status.HTTP_200_OK)
         except KeyError:
             return Response({'msg': 'Поле amount обязательно'}, status.HTTP_400_BAD_REQUEST)
