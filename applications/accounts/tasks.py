@@ -5,7 +5,7 @@ from twilio.rest import Client
 
 @app.task
 def send_user_activation_link(email, activation_code):
-    full_link = f'http://{config("ALLOWED_HOSTS").split(",")[1]}:{config("MAIN_PORT")}/api/v1/account/activate/{activation_code}'
+    full_link = f'http://{config("ALLOWED_HOSTS").split(",")[1]}:{config("MAIN_PORT")}/api/v1/accounts/activate/{activation_code}'
     send_mail(
         'from electronic store',
         f'Your activation link {full_link}',

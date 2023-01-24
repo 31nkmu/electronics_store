@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.decorators.cache import cache_page
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from applications.account import views
+from applications.accounts import views
 
 urlpatterns = [
     path('login/', cache_page(60*5)(TokenObtainPairView.as_view()), name='token_obtain'),
@@ -12,5 +12,6 @@ urlpatterns = [
     path('forgot_password/', views.ForgotPasswordApiView.as_view()),
     path('forgot_password_confirm/', views.ForgotPasswordConfirmApiView.as_view()),
     path('forgot_password_codeword/', views.ForgotPasswordCodewordApiView.as_view()),
-    path('forgot_password_phone/', views.ForgotPasswordPhoneApiView.as_view())
+    path('forgot_password_phone/', views.ForgotPasswordPhoneApiView.as_view()),
+    path('continue_register/', views.ContinueRegisterApiView.as_view()),
 ]
