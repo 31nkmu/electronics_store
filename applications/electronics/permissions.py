@@ -11,7 +11,7 @@ class IsSellerOrReadOnly(permissions.BasePermission):
         if request.method == 'GET':
             return True
         try:
-            return request.user.is_seller and (request.user.is_authenticated or request.user.is_staff)
+            return request.user.is_authenticated and (request.user.is_seller or request.user.is_staff)
         except AttributeError:
             return False
 
