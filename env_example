@@ -9,3 +9,5 @@ MAIN_PORT=your_port
 ACCOUNT_SID=your_account_sid_from_twilio
 AUTH_TOKEN=your_auth_token_from_twilio
 PHONE_NUMBER=your_phone_number_from_twilio
+SECRET=your_secret
+CLIENT_ID=your_client_id
