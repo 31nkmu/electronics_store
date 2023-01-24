@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from applications.account import tasks
+from applications.accounts import tasks
 
 User = get_user_model()
 
@@ -11,7 +11,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
+        exclude = ['groups', 'user_permissions']
 
     def validate(self, attrs):
         p1 = attrs.get('password')
@@ -31,13 +31,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return phone_number
 
     def create(self, validated_data):
-        user = User.objects.create_user(
-            password=validated_data['password'],
-            email=validated_data['email'],
-            is_active=validated_data['is_active'],
-            codeword=validated_data['codeword'],
-            phone_number=validated_data['phone_number']
-        )
+        user = User.objects.create_user(**validated_data)
         code = user.activation_code
         tasks.send_user_activation_link.delay(user.email, code)
         return user
@@ -173,3 +167,33 @@ class ForgotPasswordPhoneSerializer(serializers.Serializer):
         return user
 
 
+class RegisterContinueSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True, write_only=True)
+    codeword = serializers.CharField(required=True, write_only=True)
+    phone_number = serializers.CharField(required=True, write_only=True)
+    is_seller = serializers.BooleanField(default=False, write_only=True)
+
+    @staticmethod
+    def validate_email(email):
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError('пользователь с данным адресом почты не найден')
+        return email
+
+    @staticmethod
+    def validate_phone_number(phone_number):
+        if not phone_number.startswith('+996'):
+            raise serializers.ValidationError('Ваш номер должен начинаться на +996')
+        if len(phone_number) != 13:
+            raise serializers.ValidationError('Некоректный номер телефона')
+        if not phone_number[1:].isdigit():
+            raise serializers.ValidationError('Некоректный номер телефона')
+        return phone_number
+
+    def create(self, validated_data):
+        user = User.objects.get(email=validated_data['email'])
+        user.codeword = validated_data['codeword']
+        user.phone_number = validated_data['phone_number']
+        user.is_seller = validated_data['is_seller']
+        user.is_active = True
+        user.save(update_fields=['codeword', 'phone_number', 'is_seller', 'is_active'])
+        return user
