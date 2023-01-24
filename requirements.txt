@@ -19,3 +19,4 @@ webdriver_manager
 fake-useragent
 python-json-logger
 twilio
+django-allauth

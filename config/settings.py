@@ -212,8 +212,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'APP': {
-            'client_id': 'd2050bf8412e7c75ce34',
-            'secret': '4e634a66edaafb7a6346668cd1b98a91eca2624b',
+            'client_id': config('CLIENT_ID'),
+            'secret': config('SECRET'),
             'key': ''
         }
     }
