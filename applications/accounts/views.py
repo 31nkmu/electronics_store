@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from applications.account import serializers
+from applications.accounts import serializers
 
 User = get_user_model()
 # logger = logging.getLogger('django_logger')
@@ -60,4 +60,7 @@ class ForgotPasswordPhoneApiView(CreateAPIView):
     serializer_class = serializers.ForgotPasswordPhoneSerializer
 
 
-
+class ContinueRegisterApiView(CreateAPIView):
+    # logger.warning('continue register')
+    queryset = User.objects.all()
+    serializer_class = serializers.RegisterContinueSerializer
