@@ -37,6 +37,7 @@ urlpatterns = [
 
     path('api/v1/accounts/', include('applications.accounts.urls')),
     path('api/v1/product/', include('applications.electronics.urls')),
+    path('api/v1/order/', include('applications.orders.urls')),
 ]
 
 urlpatterns += static(

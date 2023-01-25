@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     # models
     'applications.accounts',
+    'applications.orders',
     'applications.electronics',
     'applications.feedback',
 

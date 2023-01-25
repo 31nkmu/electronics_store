@@ -19,4 +19,5 @@ webdriver_manager
 fake-useragent
 python-json-logger
 twilio
-django-allauth
+django-credit-cards
+python-dateutil
